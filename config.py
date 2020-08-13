@@ -1,5 +1,5 @@
 USERNAME = 'root'
-PASSWORD = '***'
+PASSWORD = '****'
 HOST = '123.207.29.73'
 DB = 'JiangMock'
 
