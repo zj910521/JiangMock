@@ -13,5 +13,19 @@ class Api(db.Model):
     method = db.Column(db.String(10), nullable=False)
     name = db.Column(db.String(50), nullable=False)
     url = db.Column(db.String(100), nullable=False, unique=True)
-    body = db.Column(db.TEXT, nullable=False)
+    # body = db.Column(db.TEXT, nullable=False)
+
     project_id = db.Column(db.Integer,db.ForeignKey('project.id'))
+    search_id = db.relationship("SearchRespons",backref='api')
+
+class SearchRespons(db.Model):
+    __tablename__ = "search"
+    id = db.Column(db.Integer,primary_key=True)
+    # 2.请求模式（json or formdata）
+    request_model = db.Column(db.String(50),nullable=False)
+    request_heard = db.Column(db.String(300))
+    request_data = db.Column(db.String(300),nullable=False)
+    response_data = db.Column(db.TEXT,nullable=False)
+    api_id = db.Column(db.Integer,db.ForeignKey('api.id'))
+
+
