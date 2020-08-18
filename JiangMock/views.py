@@ -1,7 +1,10 @@
 import json
 
-from JiangMock import app,models
+from JiangMock import app, models
 from flask import render_template,request
+
+from JiangMock.Validator import Validator
+
 
 @app.route("/")
 def index():
@@ -21,19 +24,10 @@ def search_request(path):
             data = request.form
 
     search = models.SearchRespons.query.filter_by(api_id=m.id,request_model=model).all()
-    check = ""
-    for i in search:
-        check = True
-        for j in data:
-            try:
-                if j not in i.request_data or data.get(j) != json.loads(i.request_data)[j]:
-                    check = False
-            except KeyError:
-                check = False
-        if check == True:
-            return i.response_data
-    if check == False:
-        return "找不到相关返回配置"
+    response = Validator.check_data(search,data)
+
+    return response
+
 
 
 @app.errorhandler(404)
