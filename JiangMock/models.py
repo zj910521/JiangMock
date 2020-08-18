@@ -13,6 +13,7 @@ class Api(db.Model):
     method = db.Column(db.String(10), nullable=False)
     name = db.Column(db.String(50), nullable=False)
     url = db.Column(db.String(100), nullable=False, unique=True)
+    request_url = db.Column(db.String(100),nullable=False,unique=True)
     # body = db.Column(db.TEXT, nullable=False)
 
     project_id = db.Column(db.Integer,db.ForeignKey('project.id'))
