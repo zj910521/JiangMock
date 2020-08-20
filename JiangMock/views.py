@@ -13,7 +13,7 @@ def index():
 @app.route("/<path:path>",methods=['GET', 'PUT', 'DELETE', 'POST'])
 def search_request(path):
     print(path,request.path,request.method,request.base_url)
-    m = models.Api.query.filter_by(request_url=request.base_url,method=request.method).first_or_404()
+    m = models.Api.query.filter_by(request_url=request.base_url,method=request.method,is_delete=False).first_or_404()
     model = ""
     if m.method == "POST":
         if len(request.form) == 0 :
