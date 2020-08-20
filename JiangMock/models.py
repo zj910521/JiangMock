@@ -6,6 +6,8 @@ class Project(db.Model):
     name = db.Column(db.String(50),unique=True,nullable=False)
     desc = db.Column(db.String(100),nullable=False)
     api = db.relationship('Api',backref='project')
+    is_delete = db.Column(db.Boolean)
+
 
 class Api(db.Model):
     __tablename__ = 'api'
@@ -15,9 +17,9 @@ class Api(db.Model):
     url = db.Column(db.String(100), nullable=False, unique=True)
     request_url = db.Column(db.String(100),nullable=False,unique=True)
     # body = db.Column(db.TEXT, nullable=False)
-
     project_id = db.Column(db.Integer,db.ForeignKey('project.id'))
     search_id = db.relationship("SearchRespons",backref='api')
+    is_delete = db.Column(db.Boolean)
 
 class SearchRespons(db.Model):
     __tablename__ = "search"
@@ -28,5 +30,7 @@ class SearchRespons(db.Model):
     request_data = db.Column(db.String(300),nullable=False)
     response_data = db.Column(db.TEXT,nullable=False)
     api_id = db.Column(db.Integer,db.ForeignKey('api.id'))
+    all_check = db.Column(db.Boolean)
+    is_delete = db.Column(db.Boolean)
 
 
