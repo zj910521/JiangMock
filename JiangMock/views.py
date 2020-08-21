@@ -8,7 +8,7 @@ from JiangMock.Validator import Validator
 
 @app.route("/")
 def index():
-    return "abc"
+    return render_template("index.html")
 
 @app.route("/<path:path>",methods=['GET', 'PUT', 'DELETE', 'POST'])
 def search_request(path):
@@ -22,8 +22,9 @@ def search_request(path):
         else:
             model = "FORM"
             data = request.form
-
+    print(data)
     search = models.SearchRespons.query.filter_by(api_id=m.id,request_model=model).all()
+    print(search)
     response = Validator.check_data(search,data)
 
     return response
