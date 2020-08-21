@@ -1,5 +1,7 @@
 import json
 
+from flask.views import MethodView
+
 from JiangMock import app, models
 from flask import render_template,request
 
@@ -9,6 +11,19 @@ from JiangMock.Validator import Validator
 @app.route("/")
 def index():
     return render_template("index.html")
+
+class Project(MethodView):
+
+    def get(self,pro_name):
+        print("1234")
+        if pro_name != "all":
+            project = models.Project.query.filter_by(name=pro_name,is_delete=False).all()
+        else:
+            project = models.Project.query.filter_by(is_delete=False).all()
+        return "12345"
+
+app.add_url_rule('/project/<string:pro_name>',view_func=Project.as_view('project'))
+
 
 @app.route("/<path:path>",methods=['GET', 'PUT', 'DELETE', 'POST'])
 def search_request(path):

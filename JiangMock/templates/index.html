@@ -16,7 +16,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
-
+    <style>
+        .block_get{
+            border:1px solid #61affe;
+            background: rgba(97, 175, 254, .1);
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -42,12 +47,41 @@
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
             <ul class="nav navbar-nav">
-<!--                <li class="active"><a href="#">新增项目 <span class="sr-only">(current)</span></a></li>-->
+                <!--                <li class="active"><a href="#">新增项目 <span class="sr-only">(current)</span></a></li>-->
                 <li><a href="#">新增项目 <span class="sr-only">(current)</span></a></li>
                 <li><a href="#">新增接口</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
+<div class="container">
+    <h1>Test
+        <small>ceshi</small>
+    </h1>
+    <div id="collapse_project_1">
+        <div class="block block_get">
+            <span class="block-method block_method_get block_method_color"
+                  onclick="collapse_api('#collapse_api_1'); make_editor('code_1')">GET</span>
+
+
+            <span class="block-method block_url">/test</span>
+            <span class="block-summary-description">test</span>
+            <button class="btn btn-primary" onclick="put_mock_api('/mocks/1/')">Save</button>
+            <button class="btn btn-danger" style="margin-left: 5px" onclick="del_mock_api('/mocks/1/')">Del
+            </button>
+        </div>
+        <div class="block_body collapse" id="collapse_api_1">
+<pre id="code_1" class="ace_editor" style="min-height: 400px"><textarea>{
+    "method": "GET",
+    "name": "test",
+    "url": "/test"
+}
+</textarea>
+</pre>
+        </div>
+
+
+    </div>
+</div>
 </body>
 </html>
