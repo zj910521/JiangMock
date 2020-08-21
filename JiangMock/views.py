@@ -17,10 +17,18 @@ class Project(MethodView):
     def get(self,pro_name):
         print("1234")
         if pro_name != "all":
-            project = models.Project.query.filter_by(name=pro_name,is_delete=False).all()
+            project = models.Project.query.filter_by(name=pro_name,is_delete=False).first_or_404()
+            print(project)
         else:
             project = models.Project.query.filter_by(is_delete=False).all()
-        return "12345"
+        projectList = []
+        for i in project:
+            pro_dict = {"pro_name":i.name,"pro_desc":i.desc}
+            projectList.append(pro_dict)
+
+        return json.dumps(projectList)
+    def post(self):
+        pass
 
 app.add_url_rule('/project/<string:pro_name>',view_func=Project.as_view('project'))
 
