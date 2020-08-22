@@ -23,14 +23,23 @@ class Project(MethodView):
             project = models.Project.query.filter_by(is_delete=False).all()
         projectList = []
         for i in project:
-            pro_dict = {"pro_name":i.name,"pro_desc":i.desc}
+            pro_dict = {"pro_id":i.id,"pro_name":i.name,"pro_desc":i.desc}
             projectList.append(pro_dict)
 
         return json.dumps(projectList)
     def post(self):
         pass
 
+
+class Api(MethodView):
+
+    def get(self,pro_id):
+        print(pro_id)
+        return "123"
+
+
 app.add_url_rule('/project/<string:pro_name>',view_func=Project.as_view('project'))
+app.add_url_rule('/api/<string:pro_id>',view_func=Api.as_view('api'))
 
 
 @app.route("/<path:path>",methods=['GET', 'PUT', 'DELETE', 'POST'])
