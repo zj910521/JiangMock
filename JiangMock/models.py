@@ -16,10 +16,9 @@ class Api(db.Model):
     name = db.Column(db.String(50), nullable=False)
     url = db.Column(db.String(100), nullable=False, unique=True)
     request_url = db.Column(db.String(100),nullable=False,unique=True)
-    # body = db.Column(db.TEXT, nullable=False)
     project_id = db.Column(db.Integer,db.ForeignKey('project.id'))
-    search_id = db.relationship("SearchRespons",backref='api')
     is_delete = db.Column(db.Boolean,default=False)
+    search_id = db.relationship("SearchRespons", backref='api')
 
 class SearchRespons(db.Model):
     __tablename__ = "search"

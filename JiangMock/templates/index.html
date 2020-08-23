@@ -38,14 +38,29 @@
     </style>
     <script>
         $(function(){
+            var data_div1 = ""
 　　      $.get("project/all",function (data) {
-                var data = JSON.parse(data)
-                console.log(data)
+                var data = JSON.parse(data);
+                console.log(data);
             for (var i =0;i<data.length;i++){
-                var pro_id = data[i].pro_id
-                $.get("api/"+pro_id,function (data1) {
+                var add_div = ""
+                add_div += '<div class="container"> <div> <h1>'+data[i].pro_name+ '<small>'+data[i].pro_desc+'</small> </h1>'
+                console.log(add_div)
+                $.get("api/"+data[i].pro_id,function (data1) {
+                    var data1 = JSON.parse(data1);
                     console.log(data1)
+                    for (var j = 0;j<data1.length;j++){
+                        console.log(data1[j].api_url)
+                        var api_method = data1[j]._api_method
+                        add_div = add_div+'<div class="cl1"> <div class="cl2 block_get clear"> <span class="block-method block_method_get block_method_color cl4")">'+data1[j].api_method+'</span> <span class="block-method block_url cl4">'+data1[j].api_url+'</span> <span class="block-summary-description cl4">'+data1[j].api_name+'</span> <button class="btn btn-danger pull-right" style="margin-left: 5px">Del </button> <button class="btn btn-primary pull-right")">Save</button> </div> </div>'
+                        console.log(add_div)
+                    }
+                    add_div+="</div></div>"
+                    $("#heard").after(add_div)
+
                 })
+
+
             }
         })
 　　
@@ -53,7 +68,7 @@
     </script>
 </head>
 <body>
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse" id="heard">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">

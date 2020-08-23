@@ -35,7 +35,13 @@ class Api(MethodView):
 
     def get(self,pro_id):
         print(pro_id)
-        return "123"
+        api = models.Api.query.filter_by(project_id=pro_id).all()
+        api_List = []
+        for i in api:
+            api_dict = {"api_id":i.id,"api_method":i.method,"api_name":i.name,"api_url":i.url}
+            api_List.append(api_dict)
+        print(api_List)
+        return json.dumps(api_List)
 
 
 app.add_url_rule('/project/<string:pro_name>',view_func=Project.as_view('project'))
