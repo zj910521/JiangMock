@@ -1,5 +1,5 @@
 from flask import Flask
-from JiangMock import views,app
+from JiangMock import views,app,session
 
 
 

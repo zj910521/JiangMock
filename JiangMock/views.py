@@ -6,7 +6,7 @@ from JiangMock import app, models
 from flask import render_template,request
 
 from JiangMock.Validator import Validator
-
+from JiangMock import session
 
 @app.route("/")
 def index():
@@ -27,8 +27,18 @@ class Project(MethodView):
             projectList.append(pro_dict)
 
         return json.dumps(projectList)
-    def post(self):
-        pass
+    def post(self,pro_name):
+        pro_name = request.form.get("pro_name")
+        pro_desc = request.form.get("pro_desc")
+        exist = models.Project.query.filter_by(name=pro_name).first()
+        if exist:
+            return "数据已存在"
+        else:
+            project = models.Project(name=pro_name,desc=pro_desc)
+            session.add(project)
+            session.commit()
+
+        return "添加成功"
 
 
 class Api(MethodView):
