@@ -37,34 +37,47 @@
 
     </style>
     <script>
-        $(function () {
-            var data_div1 = ""
-            $.get("project/all", function (data) {
-                var data = JSON.parse(data);
-                console.log(data);
-                for (var i = 0; i < data.length; i++) {
-                    var add_div = ""
-                    add_div += '<div class="container"> <div> <h1>' + data[i].pro_name + '<small>' + data[i].pro_desc + '</small> </h1>'
-                    console.log(add_div)
-                    $.get("api/" + data[i].pro_id, function (data1) {
-                        var data1 = JSON.parse(data1);
-                        console.log(data1)
-                        for (var j = 0; j < data1.length; j++) {
-                            console.log(data1[j].api_url)
-                            var api_method = data1[j]._api_method
-                            add_div = add_div + '<div class="cl1"> <div class="cl2 block_get clear"> <span class="block-method block_method_get block_method_color cl4")">' + data1[j].api_method + '</span> <span class="block-method block_url cl4">' + data1[j].api_url + '</span> <span class="block-summary-description cl4">' + data1[j].api_name + '</span> <button class="btn btn-danger pull-right" style="margin-left: 5px">Del </button> <button class="btn btn-primary pull-right")">Save</button> </div> </div>'
-                            console.log(add_div)
-                        }
-                        add_div += "</div></div>"
-                        $("#heard").after(add_div)
+        function sleep(d) {
+            for (var t = Date.now(); Date.now() - t <= d;) ;
+        }
 
-                    })
-
-
-                }
-            })
-
-        });
+        // $(function () {
+        //     var data_div1 = ""
+        //     $.get("project/all", function (data) {
+        //         var data = JSON.parse(data);
+        //         console.log(data);
+        //         for (var i = 0; i < data.length; i++) {
+        //             sleep(1000)
+        //             var add_div = ""
+        //             add_div += '<div class="container"> <div> <h1>' + data[i].pro_name + '<small>' + data[i].pro_desc + '</small> </h1>'
+        //             console.log(add_div)
+        //             $.get("api/" + data[i].pro_id, function (data1) {
+        //
+        //                 setTimeout("thirdStep()", 1000);
+        //                 if (data1 == "不存在接口数据") {
+        //                     add_div += "</div></div>"
+        //                     $("#heard").after(add_div)
+        //                 } else {
+        //                     var data1 = JSON.parse(data1);
+        //                     console.log(data1)
+        //                     for (var j = 0; j < data1.length; j++) {
+        //                         console.log(data1[j].api_url)
+        //                         var api_method = data1[j]._api_method
+        //                         add_div = add_div + '<div class="cl1"> <div class="cl2 block_get clear"> <span class="block-method block_method_get block_method_color cl4")">' + data1[j].api_method + '</span> <span class="block-method block_url cl4">' + data1[j].api_url + '</span> <span class="block-summary-description cl4">' + data1[j].api_name + '</span> <button class="btn btn-danger pull-right" style="margin-left: 5px">Del </button> <button class="btn btn-primary pull-right")">Save</button> </div> </div>'
+        //                         console.log(add_div)
+        //                     }
+        //                     add_div += "</div></div>"
+        //                     $("#heard").after(add_div)
+        //                 }
+        //
+        //
+        //             })
+        //
+        //
+        //         }
+        //     })
+        //
+        // });
     </script>
 </head>
 <body>
@@ -133,28 +146,33 @@
         </div>
     </div>
 </div>
+
+{% for d in  response_list %}
 <div class="container">
     <div>
-        <h1>tttttt
-            <small>jjjasd</small>
+        <h1>{{d.pro_name}}
+            <small>{{d.pro_desc}}</small>
         </h1>
         <div class="cl1">
+            {%  for i in d.api_list %}
             <div class="cl2 block_get clear">
                 <span class="block-method block_method_get block_method_color cl4"
-                      onclick="collapse_api('#collapse_api_1'); make_editor('code_1')">GET</span>
+                      onclick="collapse_api('#collapse_api_1'); make_editor('code_1')">{{i.api_method}}</span>
 
 
-                <span class="block-method block_url cl4">/test</span>
-                <span class="block-summary-description cl4">test</span>
+                <span class="block-method block_url cl4">{{i.api_url}}</span>
+                <span class="block-summary-description cl4">{{i.api_name}}</span>
                 <button class="btn btn-danger pull-right" style="margin-left: 5px" onclick="del_mock_api('/mocks/1/')">
                     Del
                 </button>
                 <button class="btn btn-primary pull-right" onclick="put_mock_api('/mocks/1/')">Save</button>
 
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
+ {% endfor %}
 <div class="container">
     <h1>Test
         <small>ceshi</small>

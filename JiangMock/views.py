@@ -10,7 +10,28 @@ from JiangMock import session
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    response_list=[]
+    project = models.Project.query.filter_by(is_delete=False).all()
+    for i in project:
+        api_list = []
+        api = models.Api.query.filter_by(project_id=i.id).all()
+        print(api)
+        if api:
+            for j in api:
+                api_dict = {
+                    "api_id": j.id, "api_method": j.method, "api_name": j.name, "api_url": j.url
+                }
+                api_list.append(api_dict)
+        response_dict = {
+            "pro_id":i.id,
+            "pro_name":i.name,
+            "pro_desc":i.desc,
+            "api_list":api_list
+        }
+        response_list.append(response_dict)
+    print(response_list)
+
+    return render_template("index.html",response_list=response_list)
 
 class Project(MethodView):
 
@@ -50,7 +71,8 @@ class Api(MethodView):
         for i in api:
             api_dict = {"api_id":i.id,"api_method":i.method,"api_name":i.name,"api_url":i.url}
             api_List.append(api_dict)
-        print(api_List)
+        if len(api) == 0 :
+            return "不存在接口数据"
         return json.dumps(api_List)
 
 
