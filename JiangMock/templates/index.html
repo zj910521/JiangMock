@@ -33,6 +33,7 @@
 
         .cl2 {
             line-height: 36px;
+            margin-top: 5px;
         }
 
     </style>
@@ -105,9 +106,8 @@
             </form>
             <ul class="nav navbar-nav">
                 <!--                <li class="active"><a href="#">新增项目 <span class="sr-only">(current)</span></a></li>-->
-                <li><a href="#" data-toggle="modal" data-target="#myModal">新增项目 <span
-                        class="sr-only">(current)</span></a></li>
-                <li><a href="#">新增接口</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#myModal">新增项目</a></li>
+                <li><a id="add_api" href="#" data-toggle="modal" data-target="#myModal1">新增接口</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -126,15 +126,13 @@
                     <div class="form-group">
                         <label for="project_name" class="col-sm-3 control-label">项目名称:</label>
                         <div class="col-sm-8">
-                            <input type="text" value="" name="project_name" class="form-control" id="project_name"
-                                   placeholder="You Project Name">
+                            <input type="text" value="" name="project_name" class="form-control" id="project_name">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="desc" class="col-sm-3 control-label">项目描述:</label>
                         <div class="col-sm-8">
-                            <input type="text" value="" class="form-control" id="desc" name="desc"
-                                   placeholder="Description for you project">
+                            <input type="text" value="" class="form-control" id="desc" name="desc">
                         </div>
                     </div>
                 </form>
@@ -146,15 +144,58 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel1">新增项目</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="project_name" class="col-sm-3 control-label">项目名称:</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="api_pro_name"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="project_name" class="col-sm-3 control-label">API名称:</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="" name="project_name" class="form-control" id="api_name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="desc" class="col-sm-3 control-label">API描述:</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="" class="form-control" id="api_desc" name="desc">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="desc" class="col-sm-3 control-label">API路径:</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="" class="form-control" id="api_url" name="desc">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="save_api">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-{% for d in  response_list %}
+{% for d in response_list %}
 <div class="container">
     <div>
         <h1>{{d.pro_name}}
             <small>{{d.pro_desc}}</small>
         </h1>
         <div class="cl1">
-            {%  for i in d.api_list %}
+            {% for i in d.api_list %}
             <div class="cl2 block_get clear">
                 <span class="block-method block_method_get block_method_color cl4"
                       onclick="collapse_api('#collapse_api_1'); make_editor('code_1')">{{i.api_method}}</span>
@@ -172,7 +213,7 @@
         </div>
     </div>
 </div>
- {% endfor %}
+{% endfor %}
 <div class="container">
     <h1>Test
         <small>ceshi</small>
@@ -202,4 +243,20 @@
     </div>
 </div>
 </body>
+<script>
+    $("#add_api").click(function () {
+        console.log("1234")
+        $.get("/getProjectInfo", function (data) {
+            var data = JSON.parse(data);
+            $("#api_pro_name").empty()
+            op = ""
+            for (var i=0;i<data.length;i++){
+                op += "<option "+"'pro_id'="+data[i].pro_id+">"+data[i].pro_name+"</option>"
+            }
+            console.log(op)
+            $("#api_pro_name").append(op)
+        })
+    })
+
+</script>
 </html>

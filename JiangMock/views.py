@@ -99,7 +99,17 @@ def search_request(path):
 
     return response
 
-
+@app.route("/getProjectInfo",methods=['GET'])
+def get_project_info():
+    pro_info = models.Project.query.filter_by(is_delete=False).all()
+    pro_info_list = []
+    for i in pro_info:
+        pro_dict = {
+            "pro_id":i.id,
+            "pro_name":i.name
+        }
+        pro_info_list.append(pro_dict)
+    return json.dumps(pro_info_list)
 
 @app.errorhandler(404)
 def url_not_found(error):
