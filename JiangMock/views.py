@@ -78,7 +78,7 @@ class Api(MethodView):
         api_pro_name = request.form.get("api_pro_name")
         api_name = request.form.get("api_name")
         api_method = request.form.get("api_method")
-        api_url = request.form.get("api_url")
+        api_url = request.form.get("api_url")+"/"
         request_url = request.host_url+api_url
         pro = models.Project.query.filter_by(name=api_pro_name).first()
         exist = models.Api.query.filter_by(name=api_name).first()
