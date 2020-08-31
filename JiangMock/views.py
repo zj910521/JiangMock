@@ -53,13 +53,12 @@ class Project(MethodView):
         pro_desc = request.form.get("pro_desc")
         exist = models.Project.query.filter_by(name=pro_name).first()
         if exist:
-            return "数据已存在"
+            return json.dumps({"result":"数据已存在"})
         else:
             project = models.Project(name=pro_name,desc=pro_desc)
             session.add(project)
             session.commit()
-
-        return "添加成功"
+        return json.dumps({"result":"数据添加成功"})
 
 
 class Api(MethodView):
@@ -74,6 +73,23 @@ class Api(MethodView):
         if len(api) == 0 :
             return "不存在接口数据"
         return json.dumps(api_List)
+
+    def post(self,pro_id):
+        api_pro_name = request.form.get("api_pro_name")
+        api_name = request.form.get("api_name")
+        api_method = request.form.get("api_method")
+        api_url = request.form.get("api_url")
+        request_url = request.host_url+api_url
+        pro = models.Project.query.filter_by(name=api_pro_name).first()
+        exist = models.Api.query.filter_by(name=api_name).first()
+        if exist:
+            return json.dumps({"result": "数据已存在"})
+        else:
+            api = models.Api(name=api_name, method=api_method, url=api_url ,request_url=request_url,project_id=pro.id)
+            session.add(api)
+            session.commit()
+        return json.dumps({"result": "数据添加成功"})
+
 
 
 app.add_url_rule('/project/<string:pro_name>',view_func=Project.as_view('project'))
