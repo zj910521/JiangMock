@@ -90,10 +90,40 @@ class Api(MethodView):
             session.commit()
         return json.dumps({"result": "数据添加成功"})
 
+class Search(MethodView):
+
+    def get(self,api_id):
+        print(api_id)
+        search_info = models.SearchRespons.query.filter_by(api_id=api_id,is_delete=False).all()
+        print(search_info)
+        api_List = []
+        for i in search_info:
+            api_dict = {"search_id":i.id,"request_model":i.request_model,"request_heard":i.request_heard,"request_data":i.request_data,"response_data":i.response_data}
+            api_List.append(api_dict)
+        if len(search_info) == 0 :
+            return "不存在接口数据"
+        return json.dumps(api_List)
+
+    def post(self,api_id):
+        api_pro_name = request.form.get("api_pro_name")
+        api_name = request.form.get("api_name")
+        api_method = request.form.get("api_method")
+        api_url = request.form.get("api_url")+"/"
+        request_url = request.host_url+api_url
+        pro = models.Project.query.filter_by(name=api_pro_name).first()
+        exist = models.Api.query.filter_by(name=api_name).first()
+        if exist:
+            return json.dumps({"result": "数据已存在"})
+        else:
+            api = models.Api(name=api_name, method=api_method, url=api_url ,request_url=request_url,project_id=pro.id)
+            session.add(api)
+            session.commit()
+        return json.dumps({"result": "数据添加成功"})
 
 
 app.add_url_rule('/project/<string:pro_name>',view_func=Project.as_view('project'))
 app.add_url_rule('/api/<string:pro_id>',view_func=Api.as_view('api'))
+app.add_url_rule('/search/<string:api_id>',view_func=Search.as_view('search'))
 
 
 @app.route("/<path:path>",methods=['GET', 'PUT', 'DELETE', 'POST'])
